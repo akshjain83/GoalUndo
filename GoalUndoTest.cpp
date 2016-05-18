@@ -192,3 +192,66 @@ TEST(GoalUndoTest, checkGoalAfterOverloadedUndo)
   setter.undoOperation(oper);
   ASSERT_EQ(emptY, setter.getGoal());
 }
+
+TEST(GoalUndoTest, checkLastGoalRemoved)
+{
+  GoalUndo setter;
+  string emptY = "";
+  string goal = "This is Goal"; 
+  string oper = "This is Operation";
+  setter.undoOperation();
+  ASSERT_EQ(emptY, setter.getGoal());
+}
+
+
+/*This case should fail due to inconsistency in undoOperation(string) -
+ NonEmpty Stack*/
+TEST(GoalUndoTest, checkExpectGoalAfterUndo)
+{
+  GoalUndo setter; 
+  string empty = "";
+  string goal = "This is Goal 1"; 
+  string oper = "This is Operation 1";
+  string goal2 = "This is Goal 2";
+  string oper2 = "This is Operation 2";
+  setter.addOperation(goal, oper);
+  setter.addOperation(goal2, oper2);
+  //This should remove the goal associated from the top of stack
+  setter.undoOperation(oper2);
+  ASSERT_EQ(goal, setter.getGoal());
+}
+
+
+TEST(GoalUndoTest, checkGoalAfterUndo)
+{
+  GoalUndo setter;
+  string goal = "This is goal";
+  string oper = "This is Operation 1";
+  string oper2 = "This is operation 2";
+  setter.addOperation(goal, oper);
+  setter.addOperation(oper2);
+  setter.undoOperation();
+  ASSERT_EQ(goal, setter.getGoal());
+}
+
+//Empty string is returned but the goal does exist
+TEST(GoalUndoTest, GetOperationsWhenJustGoal)
+{
+  GoalUndo setter;
+  string emptY = "";
+  string goal = "This is goal";
+  string oper = "This is Operation 1";
+  setter.addOperation(goal, oper);
+  setter.undoOperation();
+  ASSERT_EQ(emptY, setter.getOperations());
+}
+
+
+TEST(GoalUndoTest, GetSingleOperation)
+{
+  GoalUndo setter;  
+  string goal = "This is goal";
+  string oper = "This is Operation 1";
+  setter.addOperation(goal, oper);
+  ASSERT_EQ(oper, setter.getOperations());
+}
