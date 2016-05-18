@@ -97,3 +97,34 @@ TEST(GoalUndoTest, addNonEmptyGoalEmptyOperation)
   setter.addOperation(nonEmpty, emptY);
   ASSERT_EQ(emptY, setter.getGoal());
 }
+
+TEST(GoalUndoTest, loopThroughGetVectors)
+{
+ GoalUndo setter;
+ string goal = "This is first Goal";
+ string oper = "This is first Operation";
+ string oper2 = "This is second Operation";
+ string oper3 = "This is third Operation";
+ string result = oper + " " + oper2 + " " + oper3;
+ setter.addOperation(goal, oper);
+ setter.addOperation(oper2);
+ setter.addOperation(oper3);
+ ASSERT_EQ(result, setter.getOperations());
+}
+
+
+TEST(GoalUndoTest, loopThroughUndoVectors)
+{
+ GoalUndo setter;
+ string goal = "This is first Goal";
+ string oper = "This is first Operation";
+ string oper2 = "This is second Operation";
+ string oper3 = "This is third Operation";
+ string result = oper + " " + oper2 + " " + oper3;
+ setter.addOperation(goal, oper);
+ setter.addOperation(oper2);
+ setter.addOperation(oper3);
+ setter.undoOperation(oper);
+ setter.undoOperation(oper3);
+ ASSERT_EQ(oper2, setter.getOperations());
+}
