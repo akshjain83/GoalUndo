@@ -242,7 +242,7 @@ TEST(GoalUndoTest, GetOperationsWhenJustGoal)
   string goal = "This is goal";
   string oper = "This is Operation 1";
   setter.addOperation(goal, oper);
-  setter.undoOperation();
+  setter.undoOperation(oper);
   ASSERT_EQ(emptY, setter.getOperations());
 }
 
